@@ -24,3 +24,6 @@ Sensor: DHT11 (temperature + humidity)
 Interface: Single data pin (1-Wire protocol)
 
 Debugging: UART output
+
+Example implementation in main.c
+-----------
