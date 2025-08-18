@@ -18,14 +18,12 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "usart.h"
-#include "gpio.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Timer.h"
 #include "DHT.h"
 #include "GpioPin.h"
+#include "Uart.h"
 #include <stdio.h>
 /* USER CODE END Includes */
 
@@ -58,12 +56,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void SendDataUART(uint8_t value)
-{
-    char buffer[8];
-    int len = sprintf(buffer, "%d ", value); // konwersja liczby na tekst + spacja
-    HAL_UART_Transmit(&huart2, (uint8_t*)buffer, len, HAL_MAX_DELAY);
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -93,10 +86,9 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   TIM2_Init();
+  UART2_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -105,18 +97,20 @@ int main(void)
    float humidity, temperature;
    while (1)
    {
-	  OneWire_Begin();
- 	  ReadBit(data);
- 	  ReadData(data, &humidity, &temperature);
+	   OneWire_Begin();
+	  		 ReadBit(data);
+	  		 ReadData(data, &humidity, &temperature);
 
- 	  HAL_UART_Transmit(&huart2, (uint8_t*)"Humidity: ", 11, HAL_MAX_DELAY);
- 	  SendDataUART(humidity);
- 	  HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, HAL_MAX_DELAY);
+	  		 UART2_SendString("Humidity: ");
+	  		 UART2_SendFloat(humidity, 2);
+	  		 UART2_SendString("\r\n");
 
- 	  HAL_UART_Transmit(&huart2, (uint8_t*)"Temperature: ", 14, HAL_MAX_DELAY);
- 	  SendDataUART(temperature);
- 	  HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n", 2, HAL_MAX_DELAY);
-      delay_ms(2000);
+	  		 UART2_SendString("Temperature: ");
+	  		 UART2_SendFloat(temperature, 2);
+	  		 UART2_SendString("\r\n");
+	  		 UART2_SendString("\r\n");
+
+	  		 delay_ms(2000);
 
 
 
