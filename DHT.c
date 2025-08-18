@@ -6,16 +6,6 @@
 #include "GpioPin.h"
 
 
-/* GPIO stan wysoki
- * GPIO stan niski na min. 18ms
- * GPIO na stan wysoki i czekanie 20-40us na odp.
- * DHT ustawia linie na niski na 80us
- * DHT ustawia linie na wysoki na 80us
- * Bit zaczyna sie od 50us stanu niskiego. "0"-26-28us wysoki, "1"- 70us wysoki
- * DHT ustawia linie na niski na 50us
- * DHT wraca na wysoki
- */
-
 void OneWire_Begin()
 {
 	init_pin();
@@ -118,6 +108,7 @@ void ReadData(uint8_t data[5], float *Humidity, float *Temperature)
 		*Temperature = 0;
 	}
 }
+
 
 
 
